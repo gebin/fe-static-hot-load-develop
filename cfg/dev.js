@@ -1,0 +1,53 @@
+'use strict';
+
+let path = require('path');
+let webpack = require('webpack');
+let baseConfig = require('./base');
+let defaultSettings = require('./defaults');
+
+// Add needed plugins here
+let BowerWebpackPlugin = require('bower-webpack-plugin');
+
+var buildEntryPoint = function(entryPoint){
+  return [
+    'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
+    // 为什么不能是 only-dev-server
+    'webpack/hot/dev-server',
+    entryPoint
+  ]
+}
+
+let config = Object.assign({}, baseConfig, {
+  entry: {
+    demo : buildEntryPoint('./src/js/demo/index'),
+  },
+
+  output: {
+    path: path.join(__dirname, '/../dist/assets'),
+    filename: '[name].js',
+    publicPath: defaultSettings.publicPath
+  },
+
+  cache: true,
+  devtool: 'eval-source-map',
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
+    new BowerWebpackPlugin({
+      searchResolveModulesDirectories: false
+    }),
+  ],
+  module: defaultSettings.getDefaultModules()
+});
+
+// Add needed loaders to the defaults here
+config.module.loaders.push({
+  test: /\.(js|jsx)$/,
+  loader: 'babel-loader',
+  include: [].concat(
+    config.additionalPaths,
+    [ path.join(__dirname, '/../src') ]
+  )
+});
+
+module.exports = config;
