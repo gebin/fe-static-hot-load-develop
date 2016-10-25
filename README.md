@@ -4,7 +4,10 @@
 项目是基于yeoman提供的[react-webpack](https://github.com/react-webpack-generators/generator-react-webpack) 脚手架改造而成。
 
 使用步骤
-1）npm install 安装需要的node包
-2）npm start 启动开发环境
-3）可以动手开发了
+
+1）npm install 安装需要的node包。
+
+2）npm start 启动开发环境。
+
+3）可以动手开发了。
 
